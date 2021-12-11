@@ -1,16 +1,17 @@
 package ToDo;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ToDo {
     protected Path tasksPath = Paths.get("src/ToDo/TasksFile");
+    protected String IOError = "ERROR: Couldn't reach the file...";
 
 
     ToDo (){
@@ -33,11 +34,14 @@ public class ToDo {
         try {
             Files.write(this.tasksPath, taskToAdd, StandardOpenOption.APPEND);
         }catch (IOException ioException){
-            System.out.println("ERROR: Couldn't reach the file...");
+            System.out.println(this.IOError);
         }
     }
 
     public void listAllTasks(){
+        if (getNumberOfTasks() == 0){
+            System.out.println("No todos for today! :)");
+        }
         try {
             List<String> lines = Files.readAllLines(this.tasksPath);
             int taskNumber = 1;
@@ -46,7 +50,43 @@ public class ToDo {
                 taskNumber++;
             }
         } catch (IOException ioException){
-            System.out.println("ERROR: Couldn't reach the file...");
+            System.out.println(this.IOError);
         }
     }
+    public void removeTask(String string){
+        int taskToRemove = 0;
+        try{
+            taskToRemove = Integer.parseInt(string);
+        }
+        catch (NumberFormatException ex){
+            System.out.println("ERROR: enter a number of the task you want to delete!");
+        }
+        if (getNumberOfTasks() >= 2){
+            try{
+                List<String> lines = Files.readAllLines(this.tasksPath);
+                lines.remove(taskToRemove-1);
+
+                    try {
+                        Files.write(this.tasksPath, lines);
+                    }catch (IOException ioException){
+                        System.out.println(this.IOError);
+                    }
+            } catch (IOException ioException) {
+                System.out.println(this.IOError);
+            }
+        }
+    }
+    public int getNumberOfTasks(){
+        int taskCounter = 0;
+        try{
+            List<String> lines = Files.readAllLines(this.tasksPath);
+            for (String task : lines){
+                taskCounter++;
+            }
+        } catch (IOException ioException){
+            System.out.println(this.IOError);
+        }
+        return taskCounter;
+    }
 }
+

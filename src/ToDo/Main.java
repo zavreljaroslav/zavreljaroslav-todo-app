@@ -20,6 +20,12 @@ public class Main {
             }
         } else if (args[0].equals("-l")) {
             todo.listAllTasks();
+        } else if (args[0].equals(("-r"))){
+            if (args.length == 1) {
+                System.out.println("Couldn't remove a task: no task selected for removal.");
+            } else {
+                todo.removeTask(args[1]);
+            }
         }
         return todo;
     }
