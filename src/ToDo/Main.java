@@ -9,7 +9,7 @@ public class Main {
 
     }
 
-    public static ToDo handleInput(String[] args, ToDo todo) {
+    public static void handleInput(String[] args, ToDo todo) {
         if (args.length == 0) {
             todo.printUsage();
         } else if (args[0].equals("-a")) {
@@ -26,7 +26,11 @@ public class Main {
             } else {
                 todo.removeTask(args[1]);
             }
+        } else if (args[0].equals("-r")){
+
+        } else {
+            System.out.println("Unsupported argument");
         }
-        return todo;
+
     }
 }

@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ToDo {
@@ -14,10 +13,10 @@ public class ToDo {
     protected String IOError = "ERROR: Couldn't reach the file...";
 
 
-    ToDo (){
+    ToDo() {
     }
 
-    public void printUsage(){
+    public void printUsage() {
         System.out.println("Command Line Todo Application");
         System.out.println("=============================");
         System.out.println();
@@ -28,62 +27,69 @@ public class ToDo {
         System.out.println("    -c   Completes a task");
     }
 
-    public void addTask(String task){
+    public void addTask(String task) {
         List<String> taskToAdd = new ArrayList<>();
-        taskToAdd.add(task);
+        taskToAdd.add(task.concat("; open"));
         try {
             Files.write(this.tasksPath, taskToAdd, StandardOpenOption.APPEND);
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println(this.IOError);
         }
     }
 
-    public void listAllTasks(){
-        if (getNumberOfTasks() == 0){
+    public void listAllTasks() {
+        if (getNumberOfTasks() == 0) {
             System.out.println("No todos for today! :)");
         }
         try {
             List<String> lines = Files.readAllLines(this.tasksPath);
             int taskNumber = 1;
-            for (String task : lines){
-                System.out.println(taskNumber + " - " + task);
+            for (String task : lines) {
+                System.out.println(taskNumber + " - " + task.substring(0,task.length()-6));
                 taskNumber++;
             }
-        } catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println(this.IOError);
         }
     }
-    public void removeTask(String string){
+
+    public void removeTask(String string) {
         int taskToRemove = 0;
-        try{
+        try {
             taskToRemove = Integer.parseInt(string);
+        } catch (NumberFormatException ex) {
+            System.out.println("Index is not a number");
         }
-        catch (NumberFormatException ex){
-            System.out.println("ERROR: enter a number of the task you want to delete!");
-        }
-        if (getNumberOfTasks() >= 2){
-            try{
-                List<String> lines = Files.readAllLines(this.tasksPath);
-                lines.remove(taskToRemove-1);
+        if (getNumberOfTasks() < taskToRemove) {
+            System.out.println("Unable to remove: Index out of bounds");
+        } else {
+            if (getNumberOfTasks() >= 2) {
+                try {
+                    List<String> lines = Files.readAllLines(this.tasksPath);
+                    lines.remove(taskToRemove - 1);
 
                     try {
                         Files.write(this.tasksPath, lines);
-                    }catch (IOException ioException){
+                    } catch (IOException ioException) {
                         System.out.println(this.IOError);
                     }
-            } catch (IOException ioException) {
-                System.out.println(this.IOError);
+                } catch (IOException ioException) {
+                    System.out.println(this.IOError);
+                }
             }
         }
+
     }
-    public int getNumberOfTasks(){
+
+
+    public int getNumberOfTasks() {
         int taskCounter = 0;
-        try{
+        try {
             List<String> lines = Files.readAllLines(this.tasksPath);
-            for (String task : lines){
+            for (String task : lines) {
                 taskCounter++;
             }
-        } catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println(this.IOError);
         }
         return taskCounter;
