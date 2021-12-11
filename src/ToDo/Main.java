@@ -8,7 +8,7 @@ public class Main {
         todo.listAllTasks();
     }
 
-    public static void handleInput(String[] args, ToDo todo) { //checks if the input is valid, if yes, executes the funciton
+    public static void handleInput(String[] args, ToDo todo) { //checks if the input is valid, if yes, executes the function
         if (args.length == 0) {
             todo.printUsage();
         } else if (args[0].equals("-a")) {

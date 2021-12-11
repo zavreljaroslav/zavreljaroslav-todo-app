@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToDo {
-    private Path tasksPath = Paths.get("src/ToDo/TasksFile"); //path to file with data
-    private String IOError = "ERROR: Couldn't reach the file..."; //string when handling IO error, so I don't have to type it every time
+    private final Path tasksPath = Paths.get("src/ToDo/TasksFile"); //path to file with data
+    private final String IOError = "ERROR: Couldn't reach the file..."; //string when handling IO error, so I don't have to type it every time
 
     ToDo() {
     }
