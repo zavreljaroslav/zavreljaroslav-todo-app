@@ -45,7 +45,11 @@ public class ToDo {
             List<String> lines = Files.readAllLines(this.tasksPath);
             int taskNumber = 1;
             for (String task : lines) {
-                System.out.println(taskNumber + " - " + task.substring(0,task.length()-6));
+                if (task.substring(task.length()-6).contains("open")){
+                    System.out.println(taskNumber + " - [ ] " + task.substring(0,task.length()-6));
+                } else {
+                    System.out.println(taskNumber + " - [x] " + task.substring(0,task.length()-6));
+                }
                 taskNumber++;
             }
         } catch (IOException ioException) {
@@ -58,7 +62,7 @@ public class ToDo {
         try {
             taskToRemove = Integer.parseInt(string);
         } catch (NumberFormatException ex) {
-            System.out.println("Index is not a number");
+            System.out.println("Unable to remove: Index is not a number");
         }
         if (getNumberOfTasks() < taskToRemove) {
             System.out.println("Unable to remove: Index out of bounds");
@@ -80,7 +84,33 @@ public class ToDo {
         }
 
     }
-
+    public void checkTask(String string){
+        int taskToCheck = 0;
+        try {
+            taskToCheck = Integer.parseInt(string)-1;
+        } catch (NumberFormatException ex) {
+            System.out.println("Unable to check: Index is not a number");
+        }
+        if (getNumberOfTasks() < taskToCheck) {
+            System.out.println("Unable to check: Index out of bounds");
+        } else {
+            if (getNumberOfTasks() >= 2) {
+                try {
+                    List<String> lines = Files.readAllLines(this.tasksPath);
+                    String item = lines.get(taskToCheck).replace("open", "done");
+                    lines.remove(taskToCheck);
+                    lines.add(taskToCheck, item);
+                    try {
+                        Files.write(this.tasksPath, lines);
+                    } catch (IOException ioException) {
+                        System.out.println(this.IOError);
+                    }
+                } catch (IOException ioException) {
+                    System.out.println(this.IOError);
+                }
+            }
+        }
+    }
 
     public int getNumberOfTasks() {
         int taskCounter = 0;

@@ -26,8 +26,12 @@ public class Main {
             } else {
                 todo.removeTask(args[1]);
             }
-        } else if (args[0].equals("-r")){
-
+        } else if (args[0].equals("-c")){
+            if (args.length == 1){
+                System.out.println("Unable to check, no index provided");
+            } else {
+                todo.checkTask(args[1]);
+            }
         } else {
             System.out.println("Unsupported argument");
         }
