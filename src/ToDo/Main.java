@@ -6,7 +6,6 @@ public class Main {
         ToDo todo = new ToDo();
         handleInput(args, todo);
         todo.listAllTasks();
-
     }
 
     public static void handleInput(String[] args, ToDo todo) {
@@ -14,7 +13,7 @@ public class Main {
             todo.printUsage();
         } else if (args[0].equals("-a")) {
             if (args.length == 1) {
-                System.out.println("Couldn't add task: no task provided!");
+                System.out.println("Couldn't add task: no index provided!");
             } else {
                 todo.addTask(args[1]);
             }
@@ -35,6 +34,5 @@ public class Main {
         } else {
             System.out.println("Unsupported argument");
         }
-
     }
 }

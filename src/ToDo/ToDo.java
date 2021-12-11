@@ -40,27 +40,28 @@ public class ToDo {
     public void listAllTasks() {
         if (getNumberOfTasks() == 0) {
             System.out.println("No todos for today! :)");
-        }
-        try {
-            List<String> lines = Files.readAllLines(this.tasksPath);
-            int taskNumber = 1;
-            for (String task : lines) {
-                if (task.substring(task.length()-6).contains("open")){
-                    System.out.println(taskNumber + " - [ ] " + task.substring(0,task.length()-6));
-                } else {
-                    System.out.println(taskNumber + " - [x] " + task.substring(0,task.length()-6));
+        } else {
+            try {
+                List<String> lines = Files.readAllLines(this.tasksPath);
+                int taskNumber = 1;
+                for (String task : lines) {
+                    if (task.substring(task.length() - 6).contains("open")) {
+                        System.out.println(taskNumber + " - [ ] " + task.substring(0, task.length() - 6));
+                    } else {
+                        System.out.println(taskNumber + " - [x] " + task.substring(0, task.length() - 6));
+                    }
+                    taskNumber++;
                 }
-                taskNumber++;
+            } catch (IOException ioException) {
+                System.out.println(this.IOError);
             }
-        } catch (IOException ioException) {
-            System.out.println(this.IOError);
         }
     }
 
     public void removeTask(String string) {
         int taskToRemove = 0;
         try {
-            taskToRemove = Integer.parseInt(string);
+            taskToRemove = Integer.parseInt(string) - 1;
         } catch (NumberFormatException ex) {
             System.out.println("Unable to remove: Index is not a number");
         }
@@ -70,7 +71,7 @@ public class ToDo {
             if (getNumberOfTasks() >= 2) {
                 try {
                     List<String> lines = Files.readAllLines(this.tasksPath);
-                    lines.remove(taskToRemove - 1);
+                    lines.remove(taskToRemove);
 
                     try {
                         Files.write(this.tasksPath, lines);
@@ -84,10 +85,11 @@ public class ToDo {
         }
 
     }
-    public void checkTask(String string){
+
+    public void checkTask(String string) {
         int taskToCheck = 0;
         try {
-            taskToCheck = Integer.parseInt(string)-1;
+            taskToCheck = Integer.parseInt(string) - 1;
         } catch (NumberFormatException ex) {
             System.out.println("Unable to check: Index is not a number");
         }
